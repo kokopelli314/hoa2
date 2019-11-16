@@ -1,12 +1,18 @@
 import os
-from flask import Flask, flash, request, redirect, send_from_directory, url_for
+from dotenv import load_dotenv
+from flask import (
+	Flask, flash, request, redirect, render_template, send_from_directory,
+	url_for,
+)
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/home/nathan/hoa2-uploads'
+load_dotenv()
+
 ALLOWED_EXTENSIONS = { 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif' }
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = os.getenv('DOCUMENT_UPLOAD_FOLDER')
+app.secret_key = os.getenv('SECRET_KEY')
 
 
 def allowed_file(filename: str) -> bool:
@@ -42,15 +48,7 @@ def upload_file():
 			return redirect(url_for('uploaded_file', filename=filename))
 
 	# GET requests
-	return '''
-	<!doctype html>
-	<title>Upload New File</title>
-	<h1>Upload New File</h1>
-	<form method=post enctype=multipart/form-data>
-	  <input type=file name=file>
-	  <input type=submit value=Upload>
-	</form>
-	'''
+	return render_template('upload.html')
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):

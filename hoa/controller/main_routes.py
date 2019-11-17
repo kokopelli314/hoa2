@@ -1,6 +1,9 @@
+import os
 from flask import (
-	Blueprint, current_app, render_template, request, send_from_directory,
+	Blueprint, current_app, flash, render_template, redirect, request,
+	send_from_directory, url_for,
 )
+from werkzeug.utils import secure_filename
 
 router = Blueprint('main', __name__)
 
@@ -12,8 +15,8 @@ def allowed_file(filename: str) -> bool:
 
 
 @router.route('/')
-def hello():
-	return 'Hello!!!!'
+def index():
+	return render_template('index.html')
 
 
 @router.route('/upload', methods=['GET', 'POST'])
@@ -37,7 +40,7 @@ def upload_file():
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)
 			file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-			return redirect(url_for('uploaded_file', filename=filename))
+			return redirect(url_for('main.uploaded_file', filename=filename))
 
 	# GET requests
 	return render_template('upload.html')

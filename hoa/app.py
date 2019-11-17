@@ -9,7 +9,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from werkzeug.utils import secure_filename
+
 
 load_dotenv()
 
@@ -24,7 +24,10 @@ migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 
-from hoa.controller.main_routes import router
-app.register_blueprint(router)
+# Register application routes
+from hoa.controller.auth import router as auth_router
+from hoa.controller.main_routes import router as main_router
+app.register_blueprint(auth_router)
+app.register_blueprint(main_router)
 
 

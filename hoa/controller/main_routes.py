@@ -3,6 +3,7 @@ from flask import (
 	Blueprint, current_app, flash, render_template, redirect, request,
 	send_from_directory, url_for,
 )
+from flask_login import login_required
 from werkzeug.utils import secure_filename
 
 router = Blueprint('main', __name__)
@@ -15,11 +16,13 @@ def allowed_file(filename: str) -> bool:
 
 
 @router.route('/')
+@login_required
 def index():
 	return render_template('index.html')
 
 
 @router.route('/upload', methods=['GET', 'POST'])
+@login_required
 def upload_file():
 	"""
 	Upload documents to the system.
@@ -46,6 +49,7 @@ def upload_file():
 	return render_template('upload.html')
 
 @router.route('/uploads/<filename>')
+@login_required
 def uploaded_file(filename):
 	return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
 

@@ -1,7 +1,7 @@
 """users table
 
 Revision ID: a572d81a5491
-Revises: 
+Revises:
 Create Date: 2019-11-16 21:49:33.663687
 
 """
@@ -21,7 +21,7 @@ def upgrade():
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(), nullable=False),
-    sa.Column('password_word', sa.String(), nullable=False),
+    sa.Column('password_hash', sa.String(), nullable=False),
     sa.Column('first_name', sa.String(), nullable=False),
     sa.Column('last_name', sa.String(), nullable=False),
     sa.Column('email_address', sa.String(), nullable=False),

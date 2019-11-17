@@ -13,10 +13,10 @@ class User(db.Model, UserMixin):
 
 	username = db.Column(db.String(), nullable=False)
 	# bcrypt hash of user's password
-	password_word = db.Column(db.String(), nullable=False)
+	password_hash = db.Column(db.String(), nullable=False)
 
-	first_name = db.Column(db.String(), nullable=False)
-	last_name = db.Column(db.String(), nullable=False)
+	first_name = db.Column(db.String(), default='', nullable=False)
+	last_name = db.Column(db.String(), default='', nullable=False)
 	email_address = db.Column(db.String(), nullable=False)
 
 	street_address = db.Column(db.String(), nullable=True)

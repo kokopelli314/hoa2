@@ -11,8 +11,12 @@
 		<div>
 			HOA:
 			<a href="/">Home</a>
+
+			<!-- Logged-in user links -->
 			{% if current_user.is_authenticated %}
 				<a href="/logout">Logout</a>
+
+			<!-- Logged-out links -->
 			{% else %}
 				<a href="/login">Login</a>
 			{% endif %}

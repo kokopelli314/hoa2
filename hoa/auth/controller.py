@@ -6,9 +6,11 @@ from flask import (
 from flask_login import current_user, login_required, login_user, logout_user
 
 from hoa.app import db, login_manager
-from hoa.auth import check_password, get_user_by_username, create_user
+from hoa.auth.authentication import (
+	check_password, get_user_by_username, create_user,
+)
+from hoa.auth.forms import LoginForm, RegistrationForm
 from hoa.models import User
-from hoa.forms import LoginForm, RegistrationForm
 
 router = Blueprint('auth', __name__)
 
@@ -35,6 +37,13 @@ def login():
 
 login_manager.login_view = 'auth.login'
 
+
+@router.route('/forgot-password')
+def forgot_password():
+	return redirect(url_for('auth.login'))
+
+
+
 @router.route('/logout')
 @login_required
 def logout():
@@ -55,19 +64,6 @@ def register():
 		return redirect(url_for('auth.login'))
 
 	return render_template('register.html', title='Register', form=form)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

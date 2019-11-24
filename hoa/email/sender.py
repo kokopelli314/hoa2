@@ -25,8 +25,7 @@ Subject: { subject }
 
 { message_body }
 '''
-	print(msg)
+
 	res = server.sendmail(from_address, to_address, msg)
-	print(res)
 
 	server.quit()

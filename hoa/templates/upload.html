@@ -4,20 +4,10 @@
 	<title>Upload New File</title>
 	<h1>Upload New File</h1>
 
-	{% with messages = get_flashed_messages() %}
-		{% if messages %}
-			<ul class="flashes">
-				{% for message in messages %}
-					<li>{{ message }}</li>
-				{% endfor %}
-			</ul>
-		{% endif %}
-	{% endwith %}
-
-	<form method=post enctype=multipart/form-data>
-	  <input type=file name=file>
-	  <input type=submit value=Upload>
+	<form method="post" enctype="multipart/form-data">
+		<input type="file" name="file">
+		<input type="submit" value="Upload">
+		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 	</form>
-
 
 {% endblock %}

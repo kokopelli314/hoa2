@@ -1,18 +1,13 @@
-import os
+from hoa import documents
+
 from flask import (
 	Blueprint, current_app, flash, render_template, redirect, request,
 	send_from_directory, url_for,
 )
 from flask_login import login_required
-from werkzeug.utils import secure_filename
+
 
 router = Blueprint('main', __name__)
-
-ALLOWED_FILE_EXTENSIONS = { 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif' }
-
-def allowed_file(filename: str) -> bool:
-	return '.' in filename and \
-		filename.rsplit('.', 1)[1].lower() in ALLOWED_FILE_EXTENSIONS
 
 
 @router.route('/')
@@ -40,10 +35,8 @@ def upload_file():
 			flash('No selected file')
 			return redirect(request.url)
 
-		if file and allowed_file(file.filename):
-			filename = secure_filename(file.filename)
-			file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-			return redirect(url_for('main.uploaded_file', filename=filename))
+		uploaded_filename = documents.upload_file(file)
+		return redirect(url_for('main.uploaded_file', filename=uploaded_filename))
 
 	# GET requests
 	return render_template('upload.html')
@@ -52,4 +45,12 @@ def upload_file():
 @login_required
 def uploaded_file(filename):
 	return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+
+@router.route('/documents')
+@login_required
+def documents_list():
+	"""
+	Lists documents available to the user.
+	"""
+	return render_template('documents.html')
 
